@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>운세보는 챗봇</title>
+  </head>
+  <body>
+    <h1></h1>
+    <button onclick="getFortune()">요청하기</button>
+    <script>
+      async function getFortune() {
+        try {
+          const response = await fetch("http://localhost:3000/fortuneTell", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // Add any payload/data you want to send in the request body
+            body: JSON.stringify({ key: "value" }),
+          });
+
+          // Check if the request was successful (status 200)
+          if (response.ok) {
+            const data = await response.json();
+            // Do something with the received data
+            console.log(data);
+            return data;
+          } else {
+            throw new Error("Request failed with status: " + response.status);
+          }
+        } catch (error) {
+          // Handle any errors that occurred during the request
+          console.error(error);
+          throw error;
+        }
+      }
+    </script>
+  </body>
+</html>
