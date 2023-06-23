@@ -84,6 +84,8 @@
     </div>
     <script>
       const chatBox = document.querySelector(".chat-box");
+      let userMessage = [];
+      let assistantMessage = [];
 
       const sendMessage = async () => {
         const chatInput = document.querySelector(".chat-input input");
@@ -91,6 +93,7 @@
         chatMessage.classList.add("chat-message");
         chatMessage.innerHTML = `<p>${chatInput.value}</p>`;
         chatBox.appendChild(chatMessage);
+        userMessage.push(chatInput.value);
         chatInput.value = "";
 
         try {
@@ -100,12 +103,15 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              message: chatMessage.textContent,
+              userMessage: userMessage,
+              assistantMessage: assistantMessage,
             }),
           });
 
           if (response.ok) {
             const data = await response.json();
+
+            assistantMessage.push(data.assistant);
             const astrologerMessage = document.createElement("div");
             astrologerMessage.classList.add("chat-message");
             astrologerMessage.innerHTML = `<p class='assistant'>${data.assistant}</p>`;
